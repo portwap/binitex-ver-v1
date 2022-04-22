@@ -7,6 +7,7 @@ import App from "./App";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/react-vis/dist/style.css";
+import "react-datepicker/dist/react-datepicker.css";
 import "./index.css";
 
 const container = document.getElementById("root");

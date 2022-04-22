@@ -51,7 +51,29 @@ function App() {
     setFilteredCountry(newData);
   };
 
-  // console.log(countries);
+  // из загруженных данных получаем массив дат в формате дат
+  const datesArray = () => {
+    const datesArray = data.map((item) => {
+      const { dateRep } = item;
+      const splitDate = dateRep.split("/");
+      const newDate = Date.UTC(splitDate[2], splitDate[1] - 1, splitDate[0]); //Year, Month, Day
+      return newDate;
+    });
+    return datesArray;
+  };
+
+  console.log(datesArray());
+
+  const minDate = () => {
+    return Math.min(...datesArray());
+  };
+  const maxDate = () => {
+    return Math.max(...datesArray());
+  };
+
+  console.log("App min: " + minDate());
+  console.log("App max: " + maxDate());
+
 
   return (
     <div className="container-fluid mx-auto p-3 border border-5">
@@ -60,6 +82,8 @@ function App() {
         filterCountry={filterCountry}
         filteredCountry={filteredCountry}
         countries={countries}
+        minDate={minDate}
+        maxDate={maxDate}
       />
     </div>
   );

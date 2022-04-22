@@ -3,7 +3,14 @@ import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import DataChart from "./DataChart";
 
-const Tabs = ({ data, filterCountry, filteredCountry, countries }) => {
+const Tabs = ({
+  data,
+  filterCountry,
+  filteredCountry,
+  countries,
+  minDate,
+  maxDate,
+}) => {
   return (
     <div className="">
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -43,7 +50,7 @@ const Tabs = ({ data, filterCountry, filteredCountry, countries }) => {
           role="tabpanel"
           aria-labelledby="table-tab"
         >
-          <Table data={data} />
+          <Table data={data} minDate={minDate} maxDate={maxDate} />
         </div>
         <div
           className="tab-pane fade p-2"

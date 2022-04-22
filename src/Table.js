@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import { render } from "react-dom";
+import DataPicker from "./DataPicker";
 import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 
 import "ag-grid-community/dist/styles/ag-grid.css"; // Core grid CSS, always needed
@@ -35,7 +36,7 @@ var dateFilterParams = {
   browserDatePicker: true,
 };
 
-export default function Tabs({ data }) {
+export default function Tabs({ data, minDate, maxDate }) {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
@@ -88,9 +89,10 @@ export default function Tabs({ data }) {
       };
       return dataObject;
     });
-    console.log(rows);
     setRowData(rows);
   };
+
+  // console.log(rowData);
 
   useEffect(() => {
     createRows();
@@ -130,6 +132,9 @@ export default function Tabs({ data }) {
 
   return (
     <div className="">
+      <div>
+        <DataPicker minDate={minDate} maxDate={maxDate} />
+      </div>
       {/* Example using Grid's API */}
       {/* <button onClick={buttonListener}>Push Me</button> */}
       {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
