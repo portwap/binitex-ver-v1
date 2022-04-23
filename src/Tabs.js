@@ -5,8 +5,7 @@ import DataChart from "./DataChart";
 
 const Tabs = ({
   data,
-  filterCountry,
-  filteredCountry,
+  textDateToDate,
   countries,
   minDate,
   maxDate,
@@ -60,8 +59,7 @@ const Tabs = ({
         >
           <DataChart
             data={data}
-            filterCountry={filterCountry}
-            filteredCountry={filteredCountry}
+            textDateToDate={textDateToDate}
             countries={countries}
           />
         </div>

@@ -1,45 +1,77 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import DatePicker from "react-datepicker";
 
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+
 const DataPicker = ({ minDate, maxDate }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
 
   const dataRangeStart = new Date(minDate());
   const dataRangeEnd = new Date(maxDate());
 
-// useEffect(() => {
-//   const timer = setTimeout(() => {
-//     setStartDate(minDate());
-//     setEndDate(maxDate());
-//   }, 3000);
-//   return () => clearTimeout(timer);
-// }, []);
+  // console.log("dataRangeStart: " + dataRangeStart);
 
-  console.log("DataPicker min: " + minDate());
-//   console.log(minDate());
+  // const test = () => {
+  //   const year = dataRangeStart.getFullYear();
+  //   const month = dataRangeStart.getMonth();
+  //   const day = dataRangeStart.getDate();
+  //   return year + "/" + (month + 1) + "/" + day;
+  // };
+
+  const [startDate, setStartDate] = useState(new Date(2019, 11));
+  const [endDate, setEndDate] = useState(new Date(2020, 11));
+
+    const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
+      <button
+        className="btn btn-outline-secondary btn-sm text-dark"
+        onClick={onClick}
+        ref={ref}
+      >
+        {value}
+      </button>
+    ));
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setStartDate(minDate());
+  //     setEndDate(maxDate());
+  //   }, 3000);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // console.log("DataPicker min: " + minDate());
+  //   console.log(minDate());
 
   return (
     <>
+      <span className="text-nowrap">Period from</span>
       <DatePicker
         selected={startDate}
         onChange={(date) => setStartDate(date)}
         dateFormat="dd/MM/yyyy"
-        startDate={startDate}
-        endDate={endDate}
-        // minDate={dataRangeStart} // минимальная дата из полученных данных
         maxDate={endDate}
         selectsStart
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
+        includeDateIntervals={[{ start: dataRangeStart, end: dataRangeEnd }]}
+        customInput={<CustomDateInput />}
       />
+
+      <span>to</span>
+
       <DatePicker
         selected={endDate}
         onChange={(date) => setEndDate(date)}
         dateFormat="dd/MM/yyyy"
-        startDate={startDate}
-        endDate={endDate}
         minDate={startDate}
-        // maxDate={dataRangeEnd} // максимальная дата из полученных данных
         selectsEnd
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
+        includeDateIntervals={[{ start: dataRangeStart, end: dataRangeEnd }]}
+        customInput={<CustomDateInput />}
       />
     </>
   );

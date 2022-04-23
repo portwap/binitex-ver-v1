@@ -132,25 +132,23 @@ export default function Tabs({ data, minDate, maxDate }) {
 
   return (
     <div className="">
-      <div>
-        <DataPicker minDate={minDate} maxDate={maxDate} />
-      </div>
+      <DataPicker minDate={minDate} maxDate={maxDate} />
       {/* Example using Grid's API */}
       {/* <button onClick={buttonListener}>Push Me</button> */}
       {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
-      Page Size:
-      <select onChange={onPageSizeChanged} id="page-size">
-        <option value="10" defaultValue>
-          10
-        </option>
-        <option value="100">100</option>
-        <option value="500">500</option>
-        <option value="1000">1000</option>
-      </select>
-      <div
-        className="ag-theme-alpine test"
-        style={{ width: "100%", height: 500 }}
+      <select
+        class="form-select my-2"
+        onChange={onPageSizeChanged}
+        id="page-size"
       >
+        <option value="10" defaultValue>
+          Page Size: 10
+        </option>
+        <option value="100">Page Size: 100</option>
+        <option value="500">Page Size: 500</option>
+        <option value="1000">Page Size: 1000</option>
+      </select>
+      <div className="ag-theme-alpine" style={{ width: "100%", height: 500 }}>
         <AgGridReact
           // style={{ width: "100%", height: "100%;" }}
           // paginationAutoPageSize={true}

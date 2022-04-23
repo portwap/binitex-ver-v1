@@ -4,23 +4,6 @@ import { Chart } from "react-google-charts";
 
 import Badge from "react-bootstrap/Badge";
 
-const DataChart = ({ data, filterCountry, filteredCountry, countries }) => {
-  const [chartData, setChartData] = useState([]);
-
-  const loadChartData2 = (selectedCountry) => {
-    filterCountry(selectedCountry);
-    let oneCountryChartData = filteredCountry.map((item) => {
-      // получаем в итоге массив массивов
-      const { cases, deaths, day, month, year, dateRep } = item;
-      let dataArray = [dateRep, deaths, cases];
-      return dataArray;
-    });
-    oneCountryChartData.reverse(); // переворачиваем массив, чтобы даты шли по возврастающей
-    oneCountryChartData.unshift(["Период", "Смерти", "Заболевания"]); // добавляем в начало массива заголовки
-    console.log(oneCountryChartData);
-    setChartData(oneCountryChartData);
-  };
-
   let defaultData = [
     ["Период", "Смерти", "Заболевания"],
     [1, 12, 36],
@@ -31,14 +14,36 @@ const DataChart = ({ data, filterCountry, filteredCountry, countries }) => {
     [13, 7, 12],
   ];
 
+const DataChart = ({ data, textDateToDate, countries }) => {
+  const [chartData, setChartData] = useState(defaultData);
+
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  // console.log(countries);
+
+  const loadChartData2 = (country) => {
+    const newData = data.filter(
+      (item) => item.countriesAndTerritories === country
+    );
+    const oneCountryChartData = newData.map((item) => {
+      // в этой константе получаем в итоге массив массивов
+      const { cases, deaths, dateRep } = item;
+      let dataArray = [textDateToDate(dateRep), deaths, cases];
+      return dataArray;
+    });
+    oneCountryChartData.reverse(); // переворачиваем массив, чтобы даты шли по возврастающей
+    oneCountryChartData.unshift(["Period", "Deaths", "Diseases"]); // добавляем в начало массива заголовки
+    setChartData(oneCountryChartData);
+    setSelectedCountry(country);
+  };
+
   const options = {
-    title: "Заболевания/смерти по периодам",
-    hAxis: { title: "Период", textPosition: "none" },
-    vAxis: { title: "Случаи", textPosition: "none" },
+    title: "Diseases/deaths by periods",
+    hAxis: { title: "Period" },
+    vAxis: { title: "Cases" },
     legend: { position: "bottom" },
   };
 
-  // console.log(filteredCountry);
   //  console.log(countries);
 
   return (
@@ -52,6 +57,9 @@ const DataChart = ({ data, filterCountry, filteredCountry, countries }) => {
           aria-expanded="false"
         >
           Select a country
+          <Badge className="mx-2" bg="info">
+            {selectedCountry}
+          </Badge>
         </button>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
           {countries.map((country, index) => {
@@ -68,7 +76,6 @@ const DataChart = ({ data, filterCountry, filteredCountry, countries }) => {
             );
           })}
         </ul>
-        <Badge bg="secondary">Test</Badge>
       </div>
       <Chart
         chartType="LineChart"
