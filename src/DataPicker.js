@@ -5,43 +5,32 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
-const DataPicker = ({ minDate, maxDate }) => {
-
+const DataPicker = ({
+  minDate,
+  maxDate,
+  data,
+  textDateToDate,
+  filterByDateRange,
+}) => {
   const dataRangeStart = new Date(minDate());
   const dataRangeEnd = new Date(maxDate());
-
-  // console.log("dataRangeStart: " + dataRangeStart);
-
-  // const test = () => {
-  //   const year = dataRangeStart.getFullYear();
-  //   const month = dataRangeStart.getMonth();
-  //   const day = dataRangeStart.getDate();
-  //   return year + "/" + (month + 1) + "/" + day;
-  // };
 
   const [startDate, setStartDate] = useState(new Date(2019, 11));
   const [endDate, setEndDate] = useState(new Date(2020, 11));
 
-    const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
-      <button
-        className="btn btn-outline-secondary btn-sm text-dark"
-        onClick={onClick}
-        ref={ref}
-      >
-        {value}
-      </button>
-    ));
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setStartDate(minDate());
-  //     setEndDate(maxDate());
-  //   }, 3000);
-  //   return () => clearTimeout(timer);
-  // }, []);
+  const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
+    <button
+      className="btn btn-outline-secondary btn-sm text-dark"
+      onClick={onClick}
+      ref={ref}
+    >
+      {value}
+    </button>
+  ));
 
   // console.log("DataPicker min: " + minDate());
   //   console.log(minDate());
+  // console.log(filterByDateRange(new Date(2020, 2, 15), new Date(2020, 5, 5)));
 
   return (
     <>
@@ -73,6 +62,12 @@ const DataPicker = ({ minDate, maxDate }) => {
         includeDateIntervals={[{ start: dataRangeStart, end: dataRangeEnd }]}
         customInput={<CustomDateInput />}
       />
+      <button
+        className="btn btn-outline-secondary btn-sm text-dark my-1"
+        onClick={() => filterByDateRange(startDate, endDate)}
+      >
+        Filter by selected dates
+      </button>
     </>
   );
 };

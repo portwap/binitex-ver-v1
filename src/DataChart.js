@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DataPicker from "./DataPicker";
 
 import { Chart } from "react-google-charts";
 
@@ -14,9 +15,15 @@ import Badge from "react-bootstrap/Badge";
     [13, 7, 12],
   ];
 
-const DataChart = ({ data, textDateToDate, countries }) => {
+const DataChart = ({
+  data,
+  textDateToDate,
+  countries,
+  minDate,
+  maxDate,
+  filterByDateRange,
+}) => {
   const [chartData, setChartData] = useState(defaultData);
-
   const [selectedCountry, setSelectedCountry] = useState("");
 
   // console.log(countries);
@@ -50,18 +57,24 @@ const DataChart = ({ data, textDateToDate, countries }) => {
     <>
       <div className="dropdown">
         <button
-          className="btn btn-primary btn-sm dropdown-toggle"
+          className="btn btn-outline-secondary btn-sm text-dark"
           type="button"
-          id="dropdownMenu2"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
           Select a country
-          <Badge className="mx-2" bg="info">
+          <Badge className="rounded-pill mx-2" bg="dark">
             {selectedCountry}
           </Badge>
         </button>
-        <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+        {/* <DataPicker
+          minDate={minDate}
+          maxDate={maxDate}
+          data={data}
+          textDateToDate={textDateToDate}
+          filterByDateRange={filterByDateRange} // проблемка из=за этой функции, она не работает в графике
+        /> */}
+        <ul className="dropdown-menu">
           {countries.map((country, index) => {
             return (
               <li key={index}>

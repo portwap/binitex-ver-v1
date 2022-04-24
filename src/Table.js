@@ -36,7 +36,13 @@ var dateFilterParams = {
   browserDatePicker: true,
 };
 
-export default function Tabs({ data, minDate, maxDate }) {
+export default function Table({
+  data,
+  minDate,
+  maxDate,
+  textDateToDate,
+  filterByDateRange,
+}) {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
@@ -107,23 +113,6 @@ export default function Tabs({ data, minDate, maxDate }) {
     []
   );
 
-  // Example of consuming Grid Event
-  const cellClickedListener = useCallback((event) => {
-    console.log("cellClicked", event);
-  }, []);
-
-  // Example load data from sever
-  // useEffect(() => {
-  //   fetch("https://www.ag-grid.com/example-assets/row-data.json")
-  //     .then((result) => result.json())
-  //     .then((rowData) => setRowData(rowData));
-  // }, []);
-
-  // Example using Grid's API
-  const buttonListener = useCallback((e) => {
-    gridRef.current.api.deselectAll();
-  }, []);
-
   //Выбор количества строк на странице
   const onPageSizeChanged = useCallback(() => {
     var value = document.getElementById("page-size").value;
@@ -132,12 +121,15 @@ export default function Tabs({ data, minDate, maxDate }) {
 
   return (
     <div className="">
-      <DataPicker minDate={minDate} maxDate={maxDate} />
-      {/* Example using Grid's API */}
-      {/* <button onClick={buttonListener}>Push Me</button> */}
-      {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
+      <DataPicker
+        minDate={minDate}
+        maxDate={maxDate}
+        data={data}
+        textDateToDate={textDateToDate}
+        filterByDateRange={filterByDateRange}
+      />
       <select
-        class="form-select my-2"
+        className="form-select my-2"
         onChange={onPageSizeChanged}
         id="page-size"
       >
@@ -160,7 +152,6 @@ export default function Tabs({ data, minDate, maxDate }) {
           defaultColDef={defaultColDef} // Default Column Properties
           animateRows={true} // Optional - set to 'true' to have rows animate when sorted
           rowSelection="multiple" // Options - allows click selection of rows
-          onCellClicked={cellClickedListener} // Optional - registering for Grid Event
         />
       </div>
     </div>

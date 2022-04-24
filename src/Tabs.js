@@ -9,6 +9,7 @@ const Tabs = ({
   countries,
   minDate,
   maxDate,
+  filterByDateRange,
 }) => {
   return (
     <div className="">
@@ -49,7 +50,13 @@ const Tabs = ({
           role="tabpanel"
           aria-labelledby="table-tab"
         >
-          <Table data={data} minDate={minDate} maxDate={maxDate} />
+          <Table
+            data={data}
+            minDate={minDate}
+            maxDate={maxDate}
+            textDateToDate={textDateToDate}
+            filterByDateRange={filterByDateRange}
+          />
         </div>
         <div
           className="tab-pane fade p-2"
@@ -61,6 +68,9 @@ const Tabs = ({
             data={data}
             textDateToDate={textDateToDate}
             countries={countries}
+            minDate={minDate}
+            maxDate={maxDate}
+            filterByDateRange={filterByDateRange}
           />
         </div>
       </div>

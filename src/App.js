@@ -34,13 +34,6 @@ function App() {
     return () => clearTimeout(timer);
   }, [data]);
 
-  const uniqueCountries = () => {
-    const uniqueCountriesTemp = new Set(
-      data.map((item) => item.countriesAndTerritories)
-    );
-    setCountries([...uniqueCountriesTemp]);
-  };
-
   // дата текстовая в формат Date
   const textDateToDate = (textDate) => {
     const splitDate = textDate.split("/");
@@ -48,20 +41,69 @@ function App() {
     return newDate;
   };
 
-  // console.log("textDateToDate: " + textDateToDate("07/02/2020"));
+  const dateToTextDate = (date) => {
+    const yyyy = date.getFullYear();
+    let MM = date.getMonth() + 1; // Months start at 0!
+    let dd = date.getDate();
 
-  // из загруженных данных получаем массив дат в формате дат
+    if (dd < 10) dd = "0" + dd;
+    if (MM < 10) MM = "0" + MM;
+
+    const textDate = dd + "/" + MM + "/" + yyyy;
+    return textDate;
+  };
+
+  // проблема в том, что здесь работа идёт с data массивом, в таблице все хорошо, НО, 
+  // в графике работа идёт с отдельным массивом данных и эта функция не работает!!!
+  // надо решить как лучше поступить
+  const filterByDateRange = (startDate, endDate) => {
+    const dataArrayTextDateToDate = data.map((item) => {
+      // получаем массив даннных с датами в формате дат
+      const { cases, deaths, dateRep, countriesAndTerritories } = item;
+      return {
+        cases,
+        deaths,
+        dateRep: textDateToDate(dateRep),
+        countriesAndTerritories,
+      };
+    });
+    const filteredData = dataArrayTextDateToDate.filter(
+      (item) => startDate <= item.dateRep && item.dateRep <= endDate
+    );
+    const dataArrayDateToTextDate = filteredData.map((item) => {
+      // возвращаем даты в предыдущий вид текста
+      const { cases, deaths, dateRep, countriesAndTerritories } = item;
+      return {
+        cases,
+        deaths,
+        dateRep: dateToTextDate(dateRep),
+        countriesAndTerritories,
+      };
+    });
+    // console.log(dataArrayDateToTextDate);
+    setData(dataArrayDateToTextDate);
+  };
+
+  // console.log(dataArray);
+  // console.log(filteredData);
+  // console.log(filterByDateRange(new Date("2020/2/15"), new Date("2020/5/5")));
+
+  const uniqueCountries = () => {
+    const uniqueCountriesTemp = new Set(
+      data.map((item) => item.countriesAndTerritories)
+    );
+    setCountries([...uniqueCountriesTemp]);
+  };
+
+  // из загруженных данных получаем массив дат в формате дат для вычисления мин и макс (вероятно, лучше улучшить позже)
   const datesArray = () => {
     const datesArray = data.map((item) => {
-      const { dateRep } = item;
-      const splitDate = dateRep.split("/");
-      const newDate = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]); //Year, Month, Day
-      return newDate;
+      return typeof item.dateRep === "string"
+        ? textDateToDate(item.dateRep)
+        : item.dateRep;
     });
     return datesArray;
   };
-
-  // console.log(datesArray());
 
   const minDate = () => {
     return new Date(Math.min(...datesArray()));
@@ -74,7 +116,6 @@ function App() {
   // console.log("App min: " + minDate());
   // console.log("App max: " + maxDate());
 
-
   return (
     <div className="container-fluid mx-auto p-3 border border-5">
       <Tabs
@@ -83,6 +124,7 @@ function App() {
         countries={countries}
         minDate={minDate}
         maxDate={maxDate}
+        filterByDateRange={filterByDateRange}
       />
     </div>
   );
